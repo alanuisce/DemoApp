@@ -8,7 +8,7 @@
 <title>Web Application Project</title>
 </head>
 <body>
-Hello, how are you? I'm fine
+Hello, how are you? I'm fine. This is feature xyz.
 
 <% for (int i=0; i<10; i++) { %>
 This text is repeated<br/>
