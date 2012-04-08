@@ -10,20 +10,10 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class TodoServlet extends HttpServlet {
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
-	@Override
-	protected void service(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		if (req.getParameter("_method") != null)
-			req = new HttpServletRequestWrapper(req) {
-				@Override
-				public String getMethod() {
-					return getParameter("_method").toUpperCase();
-				}
-			};
-		super.service(req, resp);
-	}
+public class TodoServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -67,13 +57,9 @@ public class TodoServlet extends HttpServlet {
 	}
 
 	private TodoRepository getRepo(HttpServletRequest req) {
-		HttpSession session = req.getSession(true);
-		TodoRepository repo = (TodoRepository) session.getAttribute("repo");
-		if (repo == null) {
-			repo = new TodoRepository();
-			session.setAttribute("repo", repo);
-		}
-		return repo;
+		WebApplicationContext ctx = WebApplicationContextUtils
+				.getWebApplicationContext(getServletContext());
+		return ctx.getBean("repo", TodoRepository.class);
 	}
 
 	private void doForward(HttpServletRequest req, HttpServletResponse resp)
