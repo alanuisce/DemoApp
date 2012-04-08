@@ -15,6 +15,6 @@ This text is repeated<br/>
 <% }; %>
 
 <%= new java.util.Date()%>
-
+This is the master
 </body>
 </html>
