@@ -11,35 +11,10 @@
 <title>ToDo Application</title>
 </head>
 <body>
-<h1>To Do Application (Model 1)</h1>
+<h1>To Do Application (controller)</h1>
 <h2>List of current to do items</h2>
 
-<c:if test="${param._method.equals(\"delete\")}">
-<%
-	String strTodoId = request.getParameter("todoId");
-	Integer todoId = Integer.valueOf(strTodoId);
-	repo.getTodos().remove(todoId - 1);
-%>
-</c:if>
-
-<c:if test="${param._method.equals(\"put\")}">
-<%
-	String strTodoId = request.getParameter("todoId");
-	Integer todoId = Integer.valueOf(strTodoId);
-	Todo todo = repo.getTodos().get(todoId - 1);
-	todo.setDone(!todo.isDone());
-%>
-</c:if>
-
-<c:if test="${! empty param.text }">
-<%
-	Todo todo = new Todo();
-	todo.setText(request.getParameter("text"));
-	repo.addTodo(todo);
-%>
-</c:if>
-
-<c:forEach items="${repo.todos }" var="todo" varStatus="row">
+<c:forEach items="${todos }" var="todo" varStatus="row">
 
 ${todo.text }<br/>${todo.done }<br/>
 
