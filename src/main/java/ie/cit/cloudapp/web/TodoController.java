@@ -3,7 +3,7 @@ package ie.cit.cloudapp.web;
 import java.util.List;
 
 import ie.cit.cloudapp.Todo;
-import ie.cit.cloudapp.TodoRepository;
+
 import ie.cit.cloudapp.JdbcTodoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;

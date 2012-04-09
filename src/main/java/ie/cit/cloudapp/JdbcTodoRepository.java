@@ -17,6 +17,9 @@ public class JdbcTodoRepository {
 	public JdbcTodoRepository(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
+	
+	JdbcTodoRepository(){	
+	}
 
 	public void save(Todo todo) {
 		jdbcTemplate.update("insert into TODO(text, done) values(?,?)",
