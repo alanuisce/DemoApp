@@ -4,6 +4,7 @@ import java.util.List;
 
 import ie.cit.cloudapp.Todo;
 import ie.cit.cloudapp.TodoRepository;
+import ie.cit.cloudapp.JdbcTodoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,31 +18,32 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class TodoController {
 
 	@Autowired
-	private TodoRepository repo;
+	private JdbcTodoRepository repo;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public void listTodos(Model model) {
-		model.addAttribute("todos", repo.getTodos());
+		model.addAttribute("todos", repo.getAll());
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public void createTodo(Model model, @RequestParam String text) {
 		Todo todo = new Todo();
 		todo.setText(text);
-		repo.addTodo(todo);
-		model.addAttribute("todos", repo.getTodos());
+		repo.save(todo);
+		model.addAttribute("todos", repo.getAll());
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE)
 	public void deleteTodo(Model model, @RequestParam int todoId) {
-		repo.getTodos().remove(todoId - 1);
-		model.addAttribute("todos", repo.getTodos());
+		repo.delete(todoId);
+		model.addAttribute("todos", repo.getAll());
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public void updateTodo(Model model, @RequestParam int todoId) {
-		Todo todo = repo.getTodos().get(todoId - 1);
+		Todo todo = repo.get(todoId);
 		todo.setDone(!todo.isDone());
-		model.addAttribute("todos", repo.getTodos());
+		repo.update(todo);
+		model.addAttribute("todos", repo.getAll());
 	}
 }

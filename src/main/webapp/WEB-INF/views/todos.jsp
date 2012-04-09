@@ -20,13 +20,13 @@ ${todo.text }<br/>${todo.done }<br/>
 
 <form method="post">
 <input name="_method" type="hidden" value="delete">
-<input name="todoId" type="hidden" value="${row.count }">
+<input name="todoId" type="hidden" value="${todo.id }">
 <input type="submit" value="Delete">
 </form>
 
 <form method="post">
 <input name="_method" type="hidden" value="put">
-<input name="todoId" type="hidden" value="${row.count }">
+<input name="todoId" type="hidden" value="${todo.id }">
 <input type="submit" value="Update">
 </form>
 
