@@ -25,44 +25,48 @@ public class JdbcTodoRepository {
 
 	public void save(Todo todo) {
 		jdbcTemplate.update(
-				"insert into TODO(text, done, owner) values(?,?,?)",
+				"insert into TODO (text, done, owner) values(?,?,?)",
 				todo.getText(), todo.isDone(), getCurrentUser());
+		int id = jdbcTemplate.queryForInt("select max(id) from TODO");
+		todo.setId(id);
 	}
 
 	public Todo get(int id) {
 		return jdbcTemplate.queryForObject(
-				"select id, text, done from TODO where id=? and owner=?", new TodoMapper(),
-				id, getCurrentUser());
+				"select id, text, done from TODO where id=? and owner=?",
+				new TodoMapper(), id, getCurrentUser());
 	}
 
 	public List<Todo> getAll() {
-		return jdbcTemplate.query("select id, text, done from TODO where owner=?",
+		return jdbcTemplate.query(
+				"select id, text, done from TODO where owner=?",
 				new TodoMapper(), getCurrentUser());
 	}
 
 	private String getCurrentUser() {
-		return SecurityContextHolder
-		.getContext().getAuthentication().getName();
+		return SecurityContextHolder.getContext().getAuthentication().getName();
 	}
 
 	public void delete(int id) {
-		jdbcTemplate.update("delete from TODO where id=? and owner=?", id, getCurrentUser());
+		jdbcTemplate.update("delete from TODO where id=? and owner=?", id,
+				getCurrentUser());
 	}
 
 	public void update(Todo todo) {
-		jdbcTemplate.update("update TODO set text=?, done=? where id=? and owner=?",
+		jdbcTemplate.update(
+				"update TODO set text=?, done=? where id=? and owner=?",
 				todo.getText(), todo.isDone(), todo.getId(), getCurrentUser());
 	}
-
 }
 
 class TodoMapper implements RowMapper<Todo> {
 
 	public Todo mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Todo todo = new Todo();
+		todo.setId(rs.getInt("id"));
 		todo.setText(rs.getString("text"));
 		todo.setDone(rs.getBoolean("done"));
-		todo.setId(rs.getInt("id"));
 		return todo;
 	}
+
 }
